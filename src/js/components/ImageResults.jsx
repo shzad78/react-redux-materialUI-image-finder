@@ -9,7 +9,7 @@ class ImageResults extends Component {
       imageListContent = (
         <GridList cols={3}>
           {images.map(img => (
-            <GridTile title={img.tags}>
+            <GridTile title={img.tags} key={img.id}>
               <img src={img.largeImageURL} alt="" />
             </GridTile>
           ))}
