@@ -23,6 +23,7 @@ class Search extends Component {
         .catch(err => console.log(err));
     });
   };
+  onAmountChange = (e, index, value) => this.setState({ amount: value });
   render() {
     console.log(this.state.images);
     return (
