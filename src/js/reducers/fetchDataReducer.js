@@ -3,7 +3,7 @@ import * as types from '../constants';
 const initial = {
   isLoading: false,
   error: null,
-  data: []
+  data: {}
 };
 
 export default function(state = initial, action) {

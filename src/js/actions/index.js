@@ -23,8 +23,6 @@ export function fetchDataFail(error) {
 export function fetchData(query) {
   return {
     type: types.FETCH_DATA,
-    payload: {
-      query
-    }
+    payload: query
   };
 }

@@ -4,50 +4,36 @@ import SelectField from "material-ui/SelectField";
 import MenuItem from "material-ui/MenuItem";
 import axios from "axios";
 import ImageResults from "./ImageResults";
+import * as actions from '../actions';
+import {connect} from 'react-redux';
 
 class Search extends Component {
   state = {
     searchText: "",
-    amount: 15,
-    apiUrl: "https://pixabay.com/api",
-    apiKey: "8919227-c987f39bcc16f253cc149b502",
-    images: []
+    num: ""
   };
-  onTextChange = e => {
-    const val = e.target.value;
-    this.setState({ [e.target.name]: val }, () => {
-      if (val === "") {
-        this.setState({ images: [] });
-      } else {
-        axios
-          .get(
-            `${this.state.apiUrl}/?key=${this.state.apiKey}&q=${
-              this.state.searchText
-            }&image_type=photo&per_page=${this.state.amount}&safesearch=true`
-          )
-          .then(res => this.setState({ images: res.data.hits }))
-          .catch(err => console.log(err));
-      }
-    });
-  };
-  onAmountChange = (e, index, value) => this.setState({ amount: value });
+  
+  onAmountChange = (e, index, value) => {this.setState({ num: value });};
   render() {
-    console.log(this.state.searchText);
+    console.log('this is data from search',this.props.data);
     return (
       <div>
         <TextField
           name="searchText"
           value={this.state.searchText}
-          onChange={this.onTextChange}
+          onChange={(e)=>{this.setState({searchText:e.target.value})}}
           floatingLabelText="Search for Images"
           fullWidth={true}
         />
         <br />
         <SelectField
+          name="amount"
           floatingLabelText="Amount"
-          value={this.state.amount}
           onChange={this.onAmountChange}
+          value={this.state.num}
+          
         >
+        
           <MenuItem value={5} primaryText="5" />
           <MenuItem value={10} primaryText="10" />
           <MenuItem value={15} primaryText="15" />
@@ -55,11 +41,20 @@ class Search extends Component {
           <MenuItem value={50} primaryText="50" />
         </SelectField>
         <br />
-        {this.state.images.length > 0 ? (
-          <ImageResults images={this.state.images} />
-        ) : null}
+        <br />
+        <br />
+        <button onClick={()=>{this.props.getPics(this.state)}}>Search</button>
+        <br />
+        {Object.keys(this.props.data).length ? (
+          <ImageResults images={this.props.data.hits} />
+        ) : []}
       </div>
     );
   }
 }
-export default Search;
+function mapStateToProps(state){
+  return {
+    data:state.data.data
+  }
+}
+export default connect(mapStateToProps,{getPics:actions.fetchData})(Search);

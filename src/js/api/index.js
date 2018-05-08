@@ -152,3 +152,14 @@ export function studentHrData() {
 // export function receiveStudentRecord(record) {
 //   console.log('student details are ', record);
 // }
+
+export async function getPics(query){
+  const url="https://pixabay.com/api";
+  const key= "8919227-c987f39bcc16f253cc149b502";
+  const apiUrl=`${url}/?key=${key}&q=${query.searchText}&image_type=photo&per_page=${query.num}&safesearch=true`;
+  // const res=await axios.get(apiUrl)
+  // return res
+  const body=await fetch(apiUrl)
+  const res=await body.json();
+  return res;
+}
